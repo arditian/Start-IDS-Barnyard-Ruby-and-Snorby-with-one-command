@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#@radian
+#run snort
+
+#Install Ruby version 2.4.4 for Snorby web
+echo "===  Start Ruby for Snorby ==="
+source /etc/profile.d/rvm.sh
+rvm requirements
+rvm use 2.4.4 --default
+echo "=== Ruby 2.4.4 installed ==="
+sleep 3
+echo ""
+
+#Start Snort as IDS in eth0
+echo "=== Starting Snort ==="
+cd /etc/snort
+snort -c snort.conf -i eth0 -D
+echo "=== Snort as IDS started in Daemon Mode ==="
+sleep 3
+echo ""
+
+#Start Barnyard2
+echo "=== Starting Barnyard2 ==="
+cd /etc/snort
+barnyard2 -c barnyard2.conf -d /var/log/snort/ -f snort.log -w /var/log/snort/barnyard2.waldo -D
+echo "=== Barnyard2 started in Daemon Mode ==="
+sleep 3
+echo ""
+
+#Start Snorby
+echo "=== Starting Snorby ==="
+cd /var/www/html/snorby
+rails s -e production -b (ip snorby)
+
+root@****:/# chmod u+x (filename)
+to Start service
+root@****:/# ./(filename)

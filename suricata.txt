@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#@radian
+#run suricata
+
+#Install Ruby version 2.4.4 for Snorby web
+echo "=== Start Ruby for Snorby ==="
+source /etc/profile.d/rvm.sh
+rvm requirements
+rvm use 2.4.4 --default
+echo "=== Ruby 2.4.4 installed ==="
+sleep 3
+echo ""
+
+#Start Suricata as IDS in eth0
+echo "=== Starting Suricata ==="
+cd /etc/suricata
+/usr/bin/suricata -c suricata.yaml -i eth0 -D
+echo "=== Suricata as IDS Started in Daemon Mode ==="
+sleep 3
+echo ""
+
+#Start Barnyard2
+echo "=== Starting Barnyard2 ==="
+cd /etc/suricata
+barnyard2 -c barnyard2.conf -d /var/log/suricata -f unified2.alert -w /var/log/suricata/barnyard2.waldo -D
+echo "=== Barnyard2 started in Daemon Mode ==="
+sleep 3
+echo ""
+
+#Start Snorby
+echo "=== Starting Snorby ==="
+cd /var/www/html/snorby
+rails s -e production -b (ip snorby)
+
+root@****:/# chmod u+x (filename)
+to Start service
+root@****:/# ./(filename)
